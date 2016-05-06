@@ -98,5 +98,11 @@ if [ ! -z "$SSL_CLIENT_AUTH" ]; then
     sed -r -i "s|(log4j.logger.kafka.authorizer.logger)=(.*)|\1=DEBUG, authorizerAppender|g" $KAFKA_HOME/config/log4j.properties
 fi
 
+# OCSP
+if [ ! -z "$SSL_OCSP" ]; then
+    echo -e "ocsp.enable=true\nocsp.responderURL=http://localhost:8000" > $KAFKA_HOME/config/security.properties
+    export KAFKA_OPTS="-Djava.security.debug=all -Dcom.sun.security.enableCRLDP=true -Dcom.sun.net.ssl.checkRevocation=true -Djava.security.properties=$KAFKA_HOME/config/security.properties $KAFKA_OPTS"
+fi
+
 # Run Kafka
 $KAFKA_HOME/bin/kafka-server-start.sh $KAFKA_HOME/config/server.properties
