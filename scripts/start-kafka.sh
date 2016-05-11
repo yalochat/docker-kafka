@@ -67,6 +67,8 @@ if [ ! -z "$AUTO_CREATE_TOPICS" ]; then
     echo "auto.create.topics.enable=$AUTO_CREATE_TOPICS" >> $KAFKA_HOME/config/server.properties
 fi
 
+add_config_param "delete.topic.enable" "true"
+
 ## SSL
 add_config_param "security.inter.broker.protocol" "SSL"
 add_config_param "ssl.enabled.protocols" "TLSv1.2,TLSv1.1,TLSv1"
