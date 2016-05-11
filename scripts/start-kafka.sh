@@ -99,9 +99,9 @@ if [ ! -z "$SSL_CLIENT_AUTH" ]; then
 fi
 
 # OCSP
-if [ ! -z "$SSL_OCSP_PORT" ]; then
-    echo -e "ocsp.enable=true\nocsp.responderURL=http://localhost:$SSL_OCSP_PORT" > $KAFKA_HOME/config/security.properties
-    export KAFKA_OPTS="-Djava.security.debug=all -Dcom.sun.security.enableCRLDP=true -Dcom.sun.net.ssl.checkRevocation=true -Djava.security.properties=$KAFKA_HOME/config/security.properties $KAFKA_OPTS"
+if [ ! -z "$SSL_OCSP" ]; then
+    echo -e "ocsp.enable=$SSL_OCSP" > $KAFKA_HOME/config/security.properties
+    export KAFKA_OPTS="-Djava.security.debug=all -Dcom.sun.net.ssl.checkRevocation=$SSL_OCSP -Djava.security.properties=$KAFKA_HOME/config/security.properties $KAFKA_OPTS"
 fi
 
 # Run Kafka
