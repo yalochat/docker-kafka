@@ -1,0 +1,28 @@
+publish: &publish-defaults
+  image: plugins/docker
+  repo: yalochat/kafka
+  insecure: false
+  secrets: [ DOCKER_USERNAME, DOCKER_PASSWORD ]
+
+when-staging: &when-staging
+  when:
+    branch: [develop, feature_*, hotfix_*, support_*]
+
+when-production: &when-production
+  when:
+    event: tag
+
+pipeline:
+  publish-staging:
+    <<: *publish-defaults
+    <<: *when-staging
+    dockerfile: Dockerfile
+    tags: kafka
+    storage_path: /drone/docker-staging
+
+  publish-production:
+    <<: *publish-defaults
+    <<: *when-production
+    dockerfile: Dockerfile
+    tags: kafka-${DRONE_TAG}
+    storage_path: /drone/docker-production
